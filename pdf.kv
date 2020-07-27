@@ -1,0 +1,190 @@
+#:kivy 1.11.1
+
+<ItemDrawer>:
+    theme_text_color: "Custom"
+    on_release: self.parent.set_color_item(self)
+
+    IconLeftWidget:
+        id: icon
+        icon: root.icon
+        theme_text_color: "Custom"
+        text_color: root.text_color
+<ContentNavigationDrawer>:
+    orientation: "vertical"
+    padding: "8dp"
+    spacing: "8dp"
+
+    AnchorLayout:
+        anchor_x: "left"
+        size_hint_y: None
+        height: avatar.height
+
+        Image:
+            id: avatar
+            size_hint: None, None
+            size: "200dp", "200dp"
+            source: "logo.png"
+
+    MDLabel:
+        text: "EmperorBros"
+        font_style: "Button"
+        size_hint_y: None
+        height: self.texture_size[1]
+    MDList:
+
+        OneLineAvatarListItem:
+            text: "Home"
+            font_style: "Button"
+            on_release:app.change_screen('mainscr',"is_drawer_call")
+
+            IconLeftWidget:
+                icon: "home"
+
+
+
+        OneLineAvatarListItem:
+            text: "Change Theme"
+
+            on_release: app.show_theme_picker()
+            IconLeftWidget:
+                icon: "settings"
+
+        OneLineAvatarListItem:
+            text: "Emperorbros@gmail.com"
+
+            on_press:
+                import webbrowser
+                webbrowser.open('mailto:emprorbrosteam@gmail.com')
+            IconLeftWidget:
+                icon: "email"
+
+        OneLineAvatarListItem:
+            text: "+91 63540 35245"
+
+            on_press:
+                import webbrowser
+                webbrowser.open('callto:+916354035245')
+            IconLeftWidget:
+                icon: "phone"
+        OneLineAvatarListItem:
+            text: "About us"
+
+            on_release:app.change_screen('aboutscr',"is_drawer_call")
+            IconLeftWidget:
+                icon: "android"
+
+
+
+
+
+
+
+    ScrollView:
+
+
+        DrawerList:
+            id: md_list
+
+
+
+<Toolbar@MDToolbar>:
+    # id: mainscrtoolbar
+    pos_hint: {"top": 1}
+    elevation: 8
+
+
+Display_main:
+    manager: manager
+    name: 'Screen'
+    NavigationLayout:
+        id: nav_layout
+
+        ScreenManager:
+            id: manager
+            Mainscreen:
+            Img2pdfscreen:
+            Pdf2imgscreen:
+            Aboutscreen:
+
+
+
+        MDNavigationDrawer:
+            id: nav_drawer
+            ContentNavigationDrawer:
+                id: content_drawer
+
+<Mainscreen>:
+    # id: mainscr
+    name: 'mainscr'
+    Toolbar:
+        title: "PDFMAKER"
+        left_action_items: [["menu", lambda x: app.root.ids.nav_drawer.set_state('open')]]
+
+    MDGridLayout:
+        padding: 35
+        spacing: 35
+        pos_hint: {'top': 0.9}
+        cols: 2
+
+        MDIconButton:
+
+            icon: "camera"
+            user_font_size: "120sp"
+            pos_hint: {"center_x": .22, "center_y": .75}
+            on_release:
+                root.manager.transition.direction = 'left'
+                root.manager.current = 'img2pdfscr'
+
+
+        MDIconButton:
+            icon: "pdf-box"
+            user_font_size: "120sp"
+            pos_hint: {"center_x": .60, "center_y": .75}
+            on_release:
+                root.manager.transition.direction = 'left'
+                root.manager.current = 'pdf2imgscr'
+
+        MDIconButton:
+            icon: "file-word-box"
+            user_font_size: "120sp"
+            pos_hint: {"center_x": .22, "center_y": .53}
+
+        MDIconButton:
+            icon: "image"
+            user_font_size: "120sp"
+            pos_hint: {"center_x": .60, "center_y": .53}
+
+
+<Img2pdfscreen>:
+    id: scr
+    name: 'img2pdfscr'
+
+    Toolbar:
+        title: "Image to Pdf"
+        left_action_items: [['arrow-left', lambda x: app.change_screen('mainscr')]]
+    MDFloatingActionButton:
+        icon: "check"
+        pos_hint: {'center_x': 0.9,'center_y':0.09}
+        md_bg_color: app.theme_cls.primary_color
+        on_press: app.open_filemanager()
+
+<Pdf2imgscreen>:
+    id: scr
+    name: 'pdf2imgscr'
+
+    Toolbar:
+        title: "PDF to Image"
+        left_action_items: [['arrow-left', lambda x: app.change_screen('mainscr')]]
+    MDFloatingActionButton:
+        icon: "check"
+        pos_hint: {'center_x': 0.9,'center_y':0.09}
+        md_bg_color: app.theme_cls.primary_color
+        on_press: app.open_filemanager()
+
+<Aboutscreen>:
+    id: scr
+    name: 'aboutscr'
+
+    Toolbar:
+        title: "About Us"
+        left_action_items: [['arrow-left', lambda x: app.change_screen('mainscr')]]
